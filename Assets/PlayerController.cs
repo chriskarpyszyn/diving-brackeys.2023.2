@@ -16,6 +16,8 @@ public class PlayerController : MonoBehaviour
 
     //movement 
     public float moveSpeed = 8f;
+    public float maxLeft = 10;
+    public float maxRight = 10;
 
 
     // Start is called before the first frame update
@@ -32,10 +34,24 @@ public class PlayerController : MonoBehaviour
 
         //player left/right movement
         float horizontal = Input.GetAxis("Horizontal");
-        //float vertical = Input.GetAxis("Vertical");
-        Vector3 moveDirection = new Vector3(horizontal, 0, 0);
-        moveDirection.Normalize();
-        transform.position += moveDirection * moveSpeed * Time.deltaTime;
+        if (transform.position.x >= -10 && transform.position.x <= 10)
+        {
+            Vector3 moveDirection = new Vector3(horizontal, 0, 0);
+            moveDirection.Normalize();
+            transform.position += moveDirection * moveSpeed * Time.deltaTime;
+        } else
+        {
+            Vector3 currentPosition = transform.position;
+            if (transform.position.x < 0)
+            {
+                currentPosition.x += 0.3f;
+            } else
+            {
+                currentPosition.x -= 0.3f;
+            }
+            transform.position = currentPosition;
+        }
+    
 
     }
 }
