@@ -20,12 +20,6 @@ public class PlayerController : MonoBehaviour
     public float maxRight = 10;
 
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        Application.targetFrameRate = 60;
-    }
-
     void Update()
     {
         //falling movement
@@ -51,7 +45,17 @@ public class PlayerController : MonoBehaviour
             }
             transform.position = currentPosition;
         }
-    
+    }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        Collider triggerCollider = GetComponent<Collider>();
+        if (other.CompareTag("Enemy"))
+        {
+            FindObjectOfType<GameManager>().DecreaseHealth();
+            Destroy(other.gameObject);
+
+            //TODO: I'll want to bump the player in the opposite direction instead of destroy.
+        }
     }
 }
