@@ -44,7 +44,7 @@ public class PlayerController : MonoBehaviour
             Vector3 currentPosition = transform.position;
             if (transform.position.x < 0)
             {
-                currentPosition.x += 0.3f;
+                currentPosition.x += 0.3f; //bump backwards
             } else
             {
                 currentPosition.x -= 0.3f;
