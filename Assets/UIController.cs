@@ -1,12 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class UIController : MonoBehaviour
 {
 
-    public Transform player;
+    public GameObject player;
 
     public Text depthText;
     private int depth;
@@ -14,26 +15,31 @@ public class UIController : MonoBehaviour
     public Text healthText;
     private int health;
 
+    public Text velocityText;
+    private int velocity;
+
     private void Start()
     {
         depthText.text = depth.ToString("0") + "m";
+        velocityText.text = "0";
         healthText.text = drawHearts();
     }
 
     // Update is called once per frame
     void Update()
     {
-        int playerCeilingPosition = -1*(Mathf.CeilToInt(player.position.y) - 1);
+        int playerCeilingPosition = -1*(Mathf.CeilToInt(player.transform.position.y) - 1);
         if (depth < playerCeilingPosition)
         {
             depth = playerCeilingPosition;
             depthText.text = depth.ToString("0") + "m";
             FindObjectOfType<GameManager>().SetDepth(depth);
-
-            healthText.text = drawHearts();
-            
-
         }
+
+        float fallSpeed = player.GetComponent<PlayerController>().fallSpeed;
+        velocityText.text = fallSpeed.ToString("F2");
+
+        healthText.text = drawHearts();
     }
 
     private string drawHearts()
