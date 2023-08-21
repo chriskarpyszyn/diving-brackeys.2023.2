@@ -57,5 +57,16 @@ public class PlayerController : MonoBehaviour
 
             //TODO: I'll want to bump the player in the opposite direction instead of destroy.
         }
+
+        if (other.CompareTag("PowerUp"))
+        {
+            Debug.Log("Power Up Does Something!");
+            Destroy(other.gameObject);
+        }
+    }
+
+    public float GetFallSpeed()
+    {
+        return fallSpeed;
     }
 }
