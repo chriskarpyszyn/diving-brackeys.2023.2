@@ -733,6 +733,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1719886028812117025, guid: 48eb9cde1e39e0e4cae18cca981f9872, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1719886028812117028, guid: 48eb9cde1e39e0e4cae18cca981f9872, type: 3}
+      propertyPath: m_Constraints
+      value: 120
+      objectReference: {fileID: 0}
     - target: {fileID: 1719886028812117031, guid: 48eb9cde1e39e0e4cae18cca981f9872, type: 3}
       propertyPath: m_Name
       value: Player
@@ -746,6 +754,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3358703744571323202, guid: 3adcb616791d9f64dbecaf68ea29d6d8, type: 3}
+      propertyPath: enemyPrefab
+      value: 
+      objectReference: {fileID: 823884653364923844, guid: c7aa66b180c4de248aa5ae651dec1e72, type: 3}
     - target: {fileID: 3358703744571323203, guid: 3adcb616791d9f64dbecaf68ea29d6d8, type: 3}
       propertyPath: m_Name
       value: GameManager
