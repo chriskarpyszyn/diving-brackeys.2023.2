@@ -23,7 +23,7 @@ public class GenerateMapOnDetection : MonoBehaviour
             Transform gameObjectTransform = gameObject.transform;
             Instantiate(gameObject, new Vector3(gameObjectTransform.position.x, gameObjectTransform.position.y - zoneOffset, gameObjectTransform.position.z), Quaternion.identity);
 
-            gm.createEnemies(gameObjectTransform.position.y, zoneOffset);
+            gm.generateMap(gameObjectTransform.position.y, zoneOffset);
 
             //destroy this gameobject
             Destroy(gameObject);

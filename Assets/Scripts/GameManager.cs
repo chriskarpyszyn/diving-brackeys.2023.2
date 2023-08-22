@@ -10,8 +10,11 @@ public class GameManager : MonoBehaviour
 
     //vars for enemy generation
     public GameObject enemyPrefab;
-    public List<GameObject> enemies;
+    private List<GameObject> enemies;
     public int enemyDivider = 5;
+
+    //vars for powerups
+    public GameObject powerUpPrefab;
 
     void Start()
     {
@@ -46,7 +49,13 @@ public class GameManager : MonoBehaviour
         return playerHealth;
     }
 
-    public void createEnemies(float yPos, float zoneOffset)
+    public void generateMap(float ypos, float zoneOffset)
+    {
+        createEnemies(ypos, zoneOffset);
+        createPowerups(ypos, zoneOffset);
+    }
+
+    private void createEnemies(float yPos, float zoneOffset)
     {
         int depth = scoreDepth;
         //int randomNumber = Random.Range(1, 5); //TODO: I'd like things to be a bit more random...
@@ -62,6 +71,19 @@ public class GameManager : MonoBehaviour
             //float randomY = randomYIntRange * 0.5f;
             float randomY = Random.Range(yPos - doubleZoneOffset + 0.5f, yPos - -zoneOffset - doubleZoneOffset - 0.5f);
             Instantiate(enemyPrefab, new Vector3(randomX, randomY, enemyPrefab.transform.position.z), Quaternion.identity);
+        }
+    }
+
+    private void createPowerups(float yPos, float zoneOffset)
+    {
+        int randomNumber = Random.Range(0, 3);
+        float doubleZoneOffset = zoneOffset * 2;
+
+        float randomXRange = 9f;
+        for (int i = 0; i <= randomNumber; i++) {
+            float randomX = Random.Range(-randomXRange, randomXRange);
+            float randomY = Random.Range(yPos - doubleZoneOffset + 0.5f, yPos - -zoneOffset - doubleZoneOffset - 0.5f); //TODO: is this a typo ypos - -zoneOffset (+?)
+            Instantiate(powerUpPrefab, new Vector3(randomX, randomY, powerUpPrefab.transform.position.z), Quaternion.identity);
         }
     }
 }
