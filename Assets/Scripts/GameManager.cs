@@ -23,6 +23,11 @@ public class GameManager : MonoBehaviour
         scoreDepth = depth;
     }
 
+    public int GetDepth()
+    {
+        return scoreDepth;
+    }
+
     public void DecreaseHealth()
     {
         playerHealth--;

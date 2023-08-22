@@ -13,6 +13,11 @@ public class EnemyController : MonoBehaviour
     private float timer;
     private int direction = 1;
 
+    private void Start()
+    {
+        direction = Random.value < 0.5f ? -1 : 1;
+    }
+
     void Update()
     {
         transform.Translate(Vector3.right * direction * moveSpeed * Time.deltaTime);
