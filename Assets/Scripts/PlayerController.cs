@@ -49,10 +49,12 @@ public class PlayerController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        GameManager gm = FindObjectOfType<GameManager>();
+
         Collider triggerCollider = GetComponent<Collider>();
         if (other.CompareTag("Enemy"))
         {
-            FindObjectOfType<GameManager>().DecreaseHealth();
+            gm.DecreaseHealth();
             Destroy(other.gameObject);
 
             //TODO: I'll want to bump the player in the opposite direction instead of destroy.
@@ -60,7 +62,7 @@ public class PlayerController : MonoBehaviour
 
         if (other.CompareTag("PowerUp"))
         {
-            Debug.Log("Power Up Does Something!");
+            gm.IncrementPowerups();
             Destroy(other.gameObject);
         }
     }

@@ -18,11 +18,14 @@ public class UIController : MonoBehaviour
     public Text velocityText;
     private int velocity;
 
+    public Text powerUpText;
+    
+
     private void Start()
     {
         depthText.text = depth.ToString("0") + "m";
         velocityText.text = "0";
-        healthText.text = drawHearts();
+        healthText.text = DrawHearts();
     }
 
     // Update is called once per frame
@@ -39,10 +42,11 @@ public class UIController : MonoBehaviour
         float fallSpeed = player.GetComponent<PlayerController>().fallSpeed;
         velocityText.text = fallSpeed.ToString("F2");
 
-        healthText.text = drawHearts();
+        healthText.text = DrawHearts();
+        powerUpText.text = DrawPowerups();
     }
 
-    private string drawHearts()
+    private string DrawHearts()
     {
         health = FindObjectOfType<GameManager>().GetHealth();
         string heartEmoji = "\u2764\uFE0F";
@@ -52,5 +56,13 @@ public class UIController : MonoBehaviour
             temp = temp + " " + heartEmoji;
         }
         return temp;
+    }
+
+    private string DrawPowerups()
+    {
+        GameManager gm = FindObjectOfType<GameManager>();
+        int powerups = gm.GetPowerupCount();
+        int nextPowerup = gm.GetNextPowerupCount();
+        return "Powerups: " + powerups + " / " + nextPowerup;
     }
 }

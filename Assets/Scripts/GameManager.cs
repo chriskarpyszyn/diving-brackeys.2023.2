@@ -15,6 +15,9 @@ public class GameManager : MonoBehaviour
 
     //vars for powerups
     public GameObject powerUpPrefab;
+    public int numberOfPowerups = 0;
+    public int numberToNextPowerup = 2;
+    private int powerUpIncrement = 1;
 
     void Start()
     {
@@ -53,6 +56,30 @@ public class GameManager : MonoBehaviour
     {
         createEnemies(ypos, zoneOffset);
         createPowerups(ypos, zoneOffset);
+    }
+
+    public int GetPowerupCount()
+    {
+        return numberOfPowerups;
+    }
+
+    public int GetNextPowerupCount()
+    {
+        return numberToNextPowerup;
+    }
+
+    public void IncrementPowerups()
+    {
+        numberOfPowerups++;
+
+        if (numberOfPowerups >= numberToNextPowerup)
+        {
+            Debug.Log("HUZZARH");
+            numberOfPowerups = 0;
+            numberToNextPowerup = numberToNextPowerup + powerUpIncrement;
+            //TODO improve on this simplfiied difficulty curve.
+            powerUpIncrement = powerUpIncrement + 1 + (powerUpIncrement / 2);
+        }
     }
 
     private void createEnemies(float yPos, float zoneOffset)
