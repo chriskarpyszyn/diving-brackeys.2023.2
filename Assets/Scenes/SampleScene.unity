@@ -687,7 +687,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -332.70007, y: -19.6}
+  m_AnchoredPosition: {x: -332.70007, y: -19.599976}
   m_SizeDelta: {x: -706.4745, y: -8.6124}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1709231801 stripped
@@ -966,7 +966,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1719886028812117024, guid: 48eb9cde1e39e0e4cae18cca981f9872, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 9.41
+      value: 8.943
       objectReference: {fileID: 0}
     - target: {fileID: 1719886028812117024, guid: 48eb9cde1e39e0e4cae18cca981f9872, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1190,6 +1190,10 @@ PrefabInstance:
     - target: {fileID: 6589974774318302058, guid: b1f219a3471f00445be233e1441ff29f, type: 3}
       propertyPath: m_Name
       value: DivingBoard
+      objectReference: {fileID: 0}
+    - target: {fileID: 6589974774318302058, guid: b1f219a3471f00445be233e1441ff29f, type: 3}
+      propertyPath: m_TagString
+      value: Start
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b1f219a3471f00445be233e1441ff29f, type: 3}

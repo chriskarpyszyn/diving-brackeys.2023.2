@@ -19,12 +19,17 @@ public class PlayerController : MonoBehaviour
     public float maxLeft = 10;
     public float maxRight = 10;
 
+    private bool ground = false;
+
 
     void Update()
     {
         //falling movement
-        fallSpeed = Mathf.Min(fallSpeed + acceleration * Time.deltaTime, maxFallSpeed);
-        transform.position -= new Vector3(0, fallSpeed * Time.deltaTime, 0);
+        if (!ground)
+        {
+            fallSpeed = Mathf.Min(fallSpeed + acceleration * Time.deltaTime, maxFallSpeed);
+            transform.position -= new Vector3(0, fallSpeed * Time.deltaTime, 0);
+        }
 
         //player left/right movement
         float horizontal = Input.GetAxis("Horizontal");
@@ -64,6 +69,22 @@ public class PlayerController : MonoBehaviour
         {
             gm.IncrementPowerups();
             Destroy(other.gameObject);
+        }
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Start")) {
+            ground = true;
+            Debug.Log("ground == true");
+        }
+    }
+
+    private void OnCollisionExit(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Start")) {
+            ground = false;
+            Debug.Log("ground == false");
         }
     }
 
