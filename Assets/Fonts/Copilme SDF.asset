@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71c1514a6bd24e1e882cebbe1904ce04, type: 3}
   m_Name: Copilme SDF
   m_EditorClassIdentifier: 
-  hashCode: 0
+  hashCode: -364779584
   material: {fileID: 5743361158072817951}
-  materialHashCode: 0
+  materialHashCode: -1455052832
   m_Version: 1.1.0
   m_SourceFontFileGUID: 53d6a3c6de104b14e836fc1d009da611
   m_SourceFontFile_EditorRef: {fileID: 12800000, guid: 53d6a3c6de104b14e836fc1d009da611, type: 3}
@@ -2461,7 +2461,22 @@ MonoBehaviour:
   m_KerningTable:
     kerningPairs: []
   m_FontFeatureTable:
-    m_GlyphPairAdjustmentRecords: []
+    m_GlyphPairAdjustmentRecords:
+    - m_FirstAdjustmentRecord:
+        m_GlyphIndex: 0
+        m_GlyphValueRecord:
+          m_XPlacement: 0
+          m_YPlacement: 0
+          m_XAdvance: 0
+          m_YAdvance: 0
+      m_SecondAdjustmentRecord:
+        m_GlyphIndex: 0
+        m_GlyphValueRecord:
+          m_XPlacement: 0
+          m_YPlacement: 0
+          m_XAdvance: 0
+          m_YAdvance: 0
+      m_FeatureLookupFlags: 0
   fallbackFontAssets: []
   m_FallbackFontAssetTable: []
   m_CreationSettings:

@@ -45,6 +45,7 @@ public class GameManager : MonoBehaviour
     public void DecreaseHealth()
     {
         playerHealth--;
+        FindObjectOfType<UIController>().RemoveHeart(); //TODO: do I want to move this code elsewhere?
     }
 
     public int GetHealth()
