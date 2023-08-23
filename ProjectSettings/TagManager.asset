@@ -8,6 +8,7 @@ TagManager:
   - PowerUp
   - Trigger
   - Start
+  - PowerupDestroy
   layers:
   - Default
   - TransparentFX
