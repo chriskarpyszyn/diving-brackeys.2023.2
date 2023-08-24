@@ -19,12 +19,17 @@ public class GameManager : MonoBehaviour
     public int numberToNextPowerup = 2;
     private int powerUpIncrement = 1;
 
+
+
     void Start()
     {
         Application.targetFrameRate = 60;
         
         //TODO: I can make this better.... kind of janky.
         createEnemies(0, 2);
+
+
+
     }
 
     void Update()

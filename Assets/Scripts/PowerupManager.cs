@@ -7,6 +7,19 @@ public class PowerupManager : MonoBehaviour
     public GameObject player;
     public GameObject powerOrb;
 
+    //powerup ui
+    public GameObject pupUI1;
+    public GameObject pupUI2;
+
+
+    private void Start()
+    {
+        //powerups ui
+        pupUI1.SetActive(false);
+        pupUI2.SetActive(false);
+
+
+    }
 
     // Update is called once per frame
     void Update()
