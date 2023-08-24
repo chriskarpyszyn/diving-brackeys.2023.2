@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 8195993078907999053}
   - component: {fileID: 2335664431977824372}
   - component: {fileID: 7387693249020722772}
+  - component: {fileID: 6333795324385270912}
   m_Layer: 0
   m_Name: PowerOrbPrefab
   m_TagString: PowerupDestroy
@@ -140,3 +141,16 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &6333795324385270912
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8195993078907999040}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4cc1f9401bb41d541b5ac38613b59d4e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 1719886028812117031, guid: 48eb9cde1e39e0e4cae18cca981f9872, type: 3}

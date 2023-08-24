@@ -1,20 +1,29 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
-using static UnityEditor.PlayerSettings;
 
-public class PowerUpOrb : MonoBehaviour
+public class PowerUpOrb : MonoBehaviour, IPowerup
 {
-    public GameObject powerupGameObject;
-    private string powerupName = "Orb";
-    private int maxCooldown = 20;
-    private int currentCooldown = 0;
-
-    public void pupBehavior()
+    
+    public string powerupName {get; set;}
+    public int maxCooldown { get; set; }
+    public int currentCooldown { get; set; }
+    
+    private void Start()
     {
-        GameObject pow = Instantiate(powerOrb, pos, Quaternion.identity);
-        pow.GetComponent<FollowPlayer>().SetPlayer(player);
+        powerupName = "Orb";
+        maxCooldown = 20;
+        currentCooldown = 0;
+        
 
+    }
+
+    public void pupBehavior(GameObject player)
+    {
+        GameObject pow = Instantiate(gameObject, transform.position, Quaternion.identity);
+        pow.GetComponent<FollowPlayer>().SetPlayer(player);
+        Debug.Log(player.transform.position);
         Destroy(pow, 0.3f);//TODO extract this number
     }
 }

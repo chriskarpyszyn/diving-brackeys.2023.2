@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEditor.PlayerSettings;
 
 public class PowerupManager : MonoBehaviour
 {
@@ -44,10 +43,16 @@ public class PowerupManager : MonoBehaviour
         {
 
         }
+
+        if (Input.GetKeyDown("z"))
+        {
+            pup1Active = true;
+            pupUI1.SetActive(true);
+        }
     }
 
     private void pupOrbBehavior()
     {
-
+        powerOrb.GetComponent<IPowerup>().pupBehavior(player);
     }
 }
