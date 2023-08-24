@@ -1,15 +1,23 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEditor.PlayerSettings;
 
 public class PowerupManager : MonoBehaviour
 {
     public GameObject player;
-    public GameObject powerOrb;
+    public GameObject powerOrb; //TODO: will contain script w/ details 
 
     //powerup ui
     public GameObject pupUI1;
     public GameObject pupUI2;
+
+    //powerup logic
+    private bool pup1Active = false;
+    private bool pup2Active = false;
+
+    private List<GameObject> powerUpList;
 
 
     private void Start()
@@ -18,6 +26,9 @@ public class PowerupManager : MonoBehaviour
         pupUI1.SetActive(false);
         pupUI2.SetActive(false);
 
+        //initialization
+        powerUpList = new List<GameObject>(2);
+
 
     }
 
@@ -25,12 +36,18 @@ public class PowerupManager : MonoBehaviour
     void Update()
     {
         Vector3 pos = player.transform.position;
-        if (Input.GetKeyDown("1"))
+        if (Input.GetKeyDown("1") && pup1Active)
         {
-            GameObject pow = Instantiate(powerOrb, pos, Quaternion.identity);
-            pow.GetComponent<FollowPlayer>().SetPlayer(player);
-
-            Destroy(pow, 0.3f);//TODO extract this number
+            pupOrbBehavior();
         }
+        if (Input.GetKeyDown("2") && pup2Active)
+        {
+
+        }
+    }
+
+    private void pupOrbBehavior()
+    {
+
     }
 }
