@@ -3,11 +3,9 @@ using UnityEngine;
 
 public interface IPowerup
 {
- 
-    string powerupName { get; set; }
-    int maxCooldown { get; set; }
-    int currentCooldown { get; set; }
-
-
     void pupBehavior(GameObject player);
+    string GetPowerupName();
+    int GetMaxCooldown();
+    int GetCurrentCooldown();
+    void SetCurrentCooldown(int c);
 }
