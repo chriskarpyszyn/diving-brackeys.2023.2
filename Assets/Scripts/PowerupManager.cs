@@ -110,7 +110,7 @@ public class PowerupManager : MonoBehaviour
             ActivatePowerup(powerOrb, 1);
         } else if (powerUpList.Count == 1)
         {
-            ActivatePowerup(powerOrb, 2);
+            ActivatePowerup(powerSpeed, 2);
         }
         
     }
