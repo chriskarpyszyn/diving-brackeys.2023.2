@@ -6,6 +6,10 @@ using UnityEngine.UIElements;
 
 public class GameManager : MonoBehaviour
 {
+
+    public GameObject musicManagerPrefab;
+    private static GameObject musicManager;
+
     //scores and other ui data
     private int scoreDepth = 0;
     private int playerHealth = 3;
@@ -32,6 +36,13 @@ public class GameManager : MonoBehaviour
         {
             //TODO: I can make this better.... kind of janky.
             createEnemies(0, 2);
+        }
+
+        if (!GameObject.FindGameObjectWithTag("MusicManager"))
+        {
+            musicManager = Instantiate(musicManagerPrefab, transform.position, Quaternion.identity);
+            musicManager.name = musicManagerPrefab.name;
+            DontDestroyOnLoad(musicManager);
         }
     }
 

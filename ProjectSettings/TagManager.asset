@@ -9,6 +9,7 @@ TagManager:
   - Trigger
   - Start
   - PowerupDestroy
+  - MusicManager
   layers:
   - Default
   - TransparentFX
