@@ -57,6 +57,16 @@ public class EnemyController : MonoBehaviour
                 yDirection *= -1;
             }
 
+
+            //cute fishies looking in a direction
+            if ((direction > 0 && yDirection > 0) ||(direction < 0 && yDirection < 0))
+            {
+                transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y, 5f);
+            } else
+            {
+                transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y, -5f);
+            }
+
             //change depending on timer        
             timer += Time.deltaTime;
             if (timer > changedirectionTime)
