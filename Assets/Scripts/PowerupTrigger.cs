@@ -10,7 +10,6 @@ public class PowerupTrigger : MonoBehaviour
     {
         if (other.CompareTag("Enemy"))
         {
-            Debug.Log("Inside");
             Destroy(other.gameObject);
         }
     }

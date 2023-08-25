@@ -6,11 +6,13 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using Unity.VisualScripting;
+using TreeEditor;
+using Newtonsoft.Json.Bson;
 
 public class PowerupManager : MonoBehaviour
 {
     public GameObject player;
-    public GameObject powerOrb; //TODO: will contain script w/ details 
+    public GameObject powerOrb; //TODO: will contain script w/ details
 
     //powerup ui
     public GameObject pupUI1;
@@ -19,8 +21,6 @@ public class PowerupManager : MonoBehaviour
     //powerup logic
     private bool pup1Active = false;
     private bool pup2Active = false;
-
-    private bool pup1Cooldown = false;
 
     private List<GameObject> powerUpList;
 
@@ -35,28 +35,29 @@ public class PowerupManager : MonoBehaviour
         powerUpList = new List<GameObject>(2);
 
     }
+    /***
+     * Dumb helper to reduce my typing
+     */
+    private IPowerup GetIPowerup(GameObject powerUp)
+    {
+        return powerUp.GetComponent<IPowerup>();
+    }
 
     // Update is called once per frame
     void Update()
     {
         Vector3 pos = player.transform.position;
-        if (Input.GetKeyDown("1") && pup1Active && !pup1Cooldown)
+        if (Input.GetKeyDown("1") && pup1Active && !GetIPowerup(powerUpList[0]).GetCooldown())
         {
-            StartCoroutine(StartCooldown(powerOrb)); //todo hacking object directly in
+            StartCoroutine(StartCooldown(1));
             ExecuteBehavior(1);
-            
-            
         }
-        if (Input.GetKeyDown("2") && pup2Active)
+        if (Input.GetKeyDown("2") && pup2Active && !GetIPowerup(powerUpList[1]).GetCooldown())
         {
-            //to implement
+            StartCoroutine(StartCooldown(2));
+            ExecuteBehavior(2);
         }
 
-        //if (pup1Cooldown)
-        //{
-        //    IPowerup powerupComponent = powerUpList[puSlot - 1].GetComponent<IPowerup>();
-        //    int currentCoolDown = powerupComponent.GetCurrentCooldown();
-        //}
 
         //temp
         if (Input.GetKeyDown("z"))
@@ -65,28 +66,27 @@ public class PowerupManager : MonoBehaviour
         }
     }
 
-    IEnumerator StartCooldown(GameObject powerup)
+    IEnumerator StartCooldown(int numKey)
     {
-        Debug.Log("do I enter");
-        pup1Cooldown = true;
-        //todo i can extract this
-        Transform t = GetTransform(pupUI1, "CooldownSquare");
+        GameObject powerup = powerUpList[numKey-1];
+        IPowerup pinterface = GetIPowerup(powerup);
+        pinterface.SetCooldown(true);
+        
+        Transform t = GetTransform(GetPupUI(numKey), "CooldownSquare");
         t.gameObject.SetActive(true);
-        int timeLeft = powerup.GetComponent<IPowerup>().GetMaxCooldown();
+        int timeLeft = pinterface.GetMaxCooldown();
         while (timeLeft > 0)
         {
-            Debug.Log("do I party?");
-            yield return new WaitForSeconds(0.02f);
+            float fractionalSeconds = timeLeft / 1000;
+            yield return new WaitForSeconds(fractionalSeconds);
             timeLeft--;
-            powerup.GetComponent<IPowerup>().SetCurrentCooldown(timeLeft);
-            SetCooldownText(powerup, timeLeft);
+            pinterface.SetCurrentCooldown(timeLeft);
+            SetCooldownText(powerup, GetPupUI(numKey), timeLeft);
         }
-        Debug.Log("do I exit?");
-        pup1Cooldown = false;
+        pinterface.SetCooldown(false);
         t.gameObject.SetActive(false);
-        //TODO hacking for now to see if it works
-        powerup.GetComponent<IPowerup>().SetCurrentCooldown(20);
-        SetCooldownText(powerup, 20);
+        pinterface.SetCurrentCooldown(pinterface.GetMaxCooldown()); //TODO: i can create a reset method
+        SetCooldownText(powerup, GetPupUI(numKey), pinterface.GetMaxCooldown());
     }
 
     private void ExecuteBehavior(int puSlot)
@@ -94,16 +94,26 @@ public class PowerupManager : MonoBehaviour
         powerUpList[puSlot - 1].GetComponent<IPowerup>().pupBehavior(player);
     }
 
-    public void ActivatePowerup(GameObject powerup, int numberSlot)
+    public void ActivatePowerup()
     {
-        numberSlot = 1;
-
+        //TODO - implement random logic here to fill both up.
+        if (powerUpList.Count==0)
+        {
+            ActivatePowerup(powerOrb, 1);
+        } else if (powerUpList.Count == 1)
+        {
+            ActivatePowerup(powerOrb, 2);
+        }
+        
+    }
+    private void ActivatePowerup(GameObject powerup, int numberSlot)
+    {
         //TODO: refactor for ellegance - shortcuts will bite you in the ass chris
         if (numberSlot == 1)
         {
             powerUpList.Insert(numberSlot-1, powerup);
             pup1Active = true;
-            Transform typeTextTransform = pupUI1.transform.Find("PowerupTypeText"); //use new method
+            Transform typeTextTransform = GetTransform(pupUI1, "PowerupTypeText");
             if (typeTextTransform != null)
             {
                 TextMeshProUGUI typeText = typeTextTransform.GetComponent<TextMeshProUGUI>();
@@ -112,18 +122,47 @@ public class PowerupManager : MonoBehaviour
                     typeText.text = powerup.GetComponent<IPowerup>().GetPowerupName();
                 }
             }
-            SetCooldownText(powerup, 20);
+            SetCooldownText(powerup, pupUI1, powerup.GetComponent<IPowerup>().GetMaxCooldown());
             pupUI1.SetActive(true);
         }
         else if (numberSlot == 2)
         {
-           //todo implement
+            powerUpList.Insert(numberSlot - 1, powerup);
+            pup2Active = true;
+            Transform typeTextTransform = GetTransform(pupUI2, "PowerupTypeText");
+            if (typeTextTransform != null)
+            {
+                TextMeshProUGUI typeText = typeTextTransform.GetComponent<TextMeshProUGUI>();
+                if (typeText != null)
+                {
+                    typeText.text = powerup.GetComponent<IPowerup>().GetPowerupName();
+                }
+            }
+            SetCooldownText(powerup, pupUI2, powerup.GetComponent<IPowerup>().GetMaxCooldown());
+            pupUI2.SetActive(true);
+        }
+    }
+    /***
+     * Helper method to fix some code duplication
+     */
+    private GameObject GetPupUI(int numKey)
+    {
+        if (numKey == 1)
+        {
+            return pupUI1;
+        }
+        else
+        {
+            return pupUI2;
         }
     }
 
-    private void SetCooldownText(GameObject powerup, int v)
+    /***
+     * A method to set the cooldown text on the powerup boxes.
+     */
+    private void SetCooldownText(GameObject powerup, GameObject pupUI, int v)
     {
-        Transform cooldownTextTransform = pupUI1.transform.Find("CooldownTime");
+        Transform cooldownTextTransform = GetTransform(pupUI, "CooldownTime");
         if (cooldownTextTransform != null)
         {
             TextMeshProUGUI cooldownText = cooldownTextTransform.GetComponent<TextMeshProUGUI>();
@@ -134,6 +173,9 @@ public class PowerupManager : MonoBehaviour
         }
     }
 
+    /***
+     * Helper method to get the transform of the UI elements.
+     */
     private Transform GetTransform(GameObject pupUI, String v)
     {
         return pupUI.transform.Find(v);

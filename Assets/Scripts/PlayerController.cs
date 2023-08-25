@@ -75,7 +75,6 @@ public class PlayerController : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Start")) {
             ground = true;
-            Debug.Log("ground == true");
         }
     }
 
@@ -83,7 +82,6 @@ public class PlayerController : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Start")) {
             ground = false;
-            Debug.Log("ground == false");
         }
     }
 

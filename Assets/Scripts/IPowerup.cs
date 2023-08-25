@@ -8,4 +8,6 @@ public interface IPowerup
     int GetMaxCooldown();
     int GetCurrentCooldown();
     void SetCurrentCooldown(int c);
+    void SetCooldown(bool b);
+    bool GetCooldown();
 }

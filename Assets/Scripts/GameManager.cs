@@ -80,11 +80,12 @@ public class GameManager : MonoBehaviour
 
         if (numberOfPowerups >= numberToNextPowerup)
         {
-            Debug.Log("HUZZARH");
             numberOfPowerups = 0;
             numberToNextPowerup = numberToNextPowerup + powerUpIncrement;
             //TODO improve on this simplfiied difficulty curve.
             powerUpIncrement = powerUpIncrement + 1 + (powerUpIncrement / 2);
+
+            GetComponent<PowerupManager>().ActivatePowerup();
         }
     }
 
