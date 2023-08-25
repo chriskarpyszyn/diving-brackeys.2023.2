@@ -9,6 +9,7 @@ public class PowerupManager : MonoBehaviour
 {
     public GameObject player;
     public GameObject powerOrb; //TODO: will contain script w/ details
+    public GameObject powerSpeed;
 
     //powerup ui
     public GameObject pupUI1;
@@ -46,12 +47,11 @@ public class PowerupManager : MonoBehaviour
         if (Input.GetKeyDown("1") && pup1Active && !GetIPowerup(powerUpList[0]).GetCooldown())
         {
             StartCoroutine(StartCooldown(1));
-            ExecuteBehavior(1);
+            
         }
         if (Input.GetKeyDown("2") && pup2Active && !GetIPowerup(powerUpList[1]).GetCooldown())
         {
             StartCoroutine(StartCooldown(2));
-            ExecuteBehavior(2);
         }
 
 
@@ -60,10 +60,16 @@ public class PowerupManager : MonoBehaviour
         {
             ActivatePowerup(powerOrb, 1);
         }
+
+        if (Input.GetKeyDown("x"))
+        {
+            ActivatePowerup(powerSpeed, 2);
+        }
     }
 
     IEnumerator StartCooldown(int numKey)
     {
+        ExecuteBehavior(numKey);
         GameObject powerup = powerUpList[numKey-1];
         IPowerup pinterface = GetIPowerup(powerup);
         pinterface.SetCooldown(true);
@@ -83,11 +89,17 @@ public class PowerupManager : MonoBehaviour
         t.gameObject.SetActive(false);
         pinterface.SetCurrentCooldown(pinterface.GetMaxCooldown()); //TODO: i can create a reset method
         SetCooldownText(powerup, GetPupUI(numKey), pinterface.GetMaxCooldown());
+        ResetBehavior(numKey);
     }
 
     private void ExecuteBehavior(int puSlot)
     {
         powerUpList[puSlot - 1].GetComponent<IPowerup>().pupBehavior(player);
+    }
+
+    private void ResetBehavior(int puSlot)
+    {
+        powerUpList[puSlot - 1].GetComponent<IPowerup>().resetBehavior(player);
     }
 
     public void ActivatePowerup()

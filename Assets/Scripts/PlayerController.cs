@@ -8,10 +8,13 @@ public class PlayerController : MonoBehaviour
     //public float maxFallSpeed = -1f;
     //private Rigidbody rb;
 
+    private float _acceleration = 0.5f;
+    private float _maxFallSpeed = 5f;
+
     //new falling code
-    public float fallSpeed = 1f;
-    public float acceleration = 0.1f;
-    public float maxFallSpeed = 2f;
+    public float fallSpeed = 2f;
+    public float acceleration = 0.5f;
+    public float maxFallSpeed = 5f;
 
     //movement 
     public float moveSpeed = 8f;
@@ -26,9 +29,18 @@ public class PlayerController : MonoBehaviour
         //falling movement
         if (!ground)
         {
-            fallSpeed = Mathf.Min(fallSpeed + acceleration * Time.deltaTime, maxFallSpeed);
-            transform.position -= new Vector3(0, fallSpeed * Time.deltaTime, 0);
+            if (fallSpeed <= maxFallSpeed)
+            {
+                fallSpeed = Mathf.Min(fallSpeed + acceleration * Time.deltaTime, maxFallSpeed);
+                transform.position -= new Vector3(0, fallSpeed * Time.deltaTime, 0);
+            }
+            else if (fallSpeed > maxFallSpeed)
+            {
+                fallSpeed = Mathf.Min(fallSpeed + acceleration * Time.deltaTime, maxFallSpeed);
+                transform.position -= new Vector3(0, fallSpeed * Time.deltaTime, 0);
+            }
         }
+
 
         //player left/right movement
         float horizontal = Input.GetAxis("Horizontal");
@@ -88,5 +100,17 @@ public class PlayerController : MonoBehaviour
     public float GetFallSpeed()
     {
         return fallSpeed;
+    }
+
+    public void SetFallSpeed(float maxFallSpeed, float acceleration)
+    {
+        this.maxFallSpeed = maxFallSpeed;
+        this.acceleration = acceleration;
+    }
+
+    public void ResetFallSpeed()
+    {
+        maxFallSpeed = _maxFallSpeed;
+        acceleration = _acceleration;
     }
 }

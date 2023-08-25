@@ -412,6 +412,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 1709231801}
   powerOrb: {fileID: 8195993078907999040, guid: e526ccdb110aea8449ccf50df2b4359e, type: 3}
+  powerSpeed: {fileID: 6653028514751089202, guid: 3f0c6608492d9ab4a9a104700f72f44f, type: 3}
   pupUI1: {fileID: 1780090646}
   pupUI2: {fileID: 712532671}
 --- !u!1 &712532671 stripped
