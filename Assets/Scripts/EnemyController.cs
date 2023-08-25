@@ -13,28 +13,38 @@ public class EnemyController : MonoBehaviour
     private float timer;
     private int direction = 1;
 
+    GameManager gm;
+
     private void Start()
     {
+        gm = FindObjectOfType<GameManager>();
         direction = Random.value < 0.5f ? -1 : 1;
     }
 
     void Update()
     {
-        transform.Translate(Vector3.right * direction * moveSpeed * Time.deltaTime);
-
-        //change direction if it reaches a position >10
-        if (transform.position.x < -10 || transform.position.x > 10)
+        if (gm == null)
         {
-            direction *= -1;
+            gm = FindObjectOfType<GameManager>();
         }
+
+        if (!gm.isGameOver())
+        {
+            transform.Translate(Vector3.right * direction * moveSpeed * Time.deltaTime);
+
+            //change direction if it reaches a position >10
+            if (transform.position.x < -10 || transform.position.x > 10)
+            {
+                direction *= -1;
+            }
 
             //change depending on timer        
             timer += Time.deltaTime;
-        if (timer > changedirectionTime)
-        {
-            timer = 0f;
-            direction = Random.value < 0.5f ? -1 : 1;
+            if (timer > changedirectionTime)
+            {
+                timer = 0f;
+                direction = Random.value < 0.5f ? -1 : 1;
+            }
         }
-
     }
 }

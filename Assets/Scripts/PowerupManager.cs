@@ -21,6 +21,8 @@ public class PowerupManager : MonoBehaviour
 
     private List<GameObject> powerUpList;
 
+    GameManager gm;
+
 
     private void Start()
     {
@@ -30,6 +32,8 @@ public class PowerupManager : MonoBehaviour
 
         //initialization
         powerUpList = new List<GameObject>(2);
+
+        gm = FindObjectOfType<GameManager>();
 
     }
     /***
@@ -43,28 +47,38 @@ public class PowerupManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Vector3 pos = player.transform.position;
-        if (Input.GetKeyDown("1") && pup1Active && !GetIPowerup(powerUpList[0]).GetCooldown())
+
+        if (gm == null)
         {
-            StartCoroutine(StartCooldown(1));
-            
-        }
-        if (Input.GetKeyDown("2") && pup2Active && !GetIPowerup(powerUpList[1]).GetCooldown())
-        {
-            StartCoroutine(StartCooldown(2));
+            gm = FindObjectOfType<GameManager>();
         }
 
-
-        //temp
-        if (Input.GetKeyDown("z"))
+        if (!gm.isGameOver())
         {
-            ActivatePowerup(powerOrb, 1);
+            Vector3 pos = player.transform.position;
+            if (Input.GetKeyDown("1") && pup1Active && !GetIPowerup(powerUpList[0]).GetCooldown())
+            {
+                StartCoroutine(StartCooldown(1));
+
+            }
+            if (Input.GetKeyDown("2") && pup2Active && !GetIPowerup(powerUpList[1]).GetCooldown())
+            {
+                StartCoroutine(StartCooldown(2));
+            }
+
+
+            //temp
+            if (Input.GetKeyDown("z"))
+            {
+                ActivatePowerup(powerOrb, 1);
+            }
+
+            if (Input.GetKeyDown("x"))
+            {
+                ActivatePowerup(powerSpeed, 2);
+            }
         }
 
-        if (Input.GetKeyDown("x"))
-        {
-            ActivatePowerup(powerSpeed, 2);
-        }
     }
 
     IEnumerator StartCooldown(int numKey)

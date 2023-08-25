@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UIElements;
 
 public class GameManager : MonoBehaviour
 {
@@ -19,22 +21,27 @@ public class GameManager : MonoBehaviour
     public int numberToNextPowerup = 2;
     private int powerUpIncrement = 1;
 
+    private bool gameHasEnded = false;
 
 
     void Start()
     {
         Application.targetFrameRate = 60;
-        
-        //TODO: I can make this better.... kind of janky.
-        createEnemies(0, 2);
 
-
-
+        if (SceneManager.GetActiveScene().buildIndex == 0)
+        {
+            //TODO: I can make this better.... kind of janky.
+            createEnemies(0, 2);
+        }
     }
 
     void Update()
     {
-        
+        if (SceneManager.GetActiveScene().buildIndex == 1 && Input.anyKeyDown)
+        {
+            Debug.Log("why");
+            RestartGame();
+        }
     }
 
     public void SetDepth(int depth)
@@ -49,8 +56,16 @@ public class GameManager : MonoBehaviour
 
     public void DecreaseHealth()
     {
-        playerHealth--;
-        FindObjectOfType<UIController>().RemoveHeart(); //TODO: do I want to move this code elsewhere?
+        if (playerHealth>0)
+        {
+            playerHealth--;
+            FindObjectOfType<UIController>().RemoveHeart(); //TODO: do I want to move this code elsewhere?
+        }
+        if (playerHealth==0)
+        {
+            EndGame();
+        }
+
     }
 
     public int GetHealth()
@@ -119,5 +134,25 @@ public class GameManager : MonoBehaviour
             float randomY = Random.Range(yPos - doubleZoneOffset + 0.5f, yPos - -zoneOffset - doubleZoneOffset - 0.5f); //TODO: is this a typo ypos - -zoneOffset (+?)
             Instantiate(powerUpPrefab, new Vector3(randomX, randomY, powerUpPrefab.transform.position.z), Quaternion.identity);
         }
+    }
+
+    private void EndGame()
+    {
+        if (!gameHasEnded)
+        {
+            gameHasEnded = true;
+            SceneManager.LoadScene(1);
+        }
+    }
+
+    private void RestartGame()
+    {
+        gameHasEnded = false;
+        SceneManager.LoadScene(0);
+    }
+
+    public bool isGameOver()
+    {
+        return gameHasEnded;
     }
 }

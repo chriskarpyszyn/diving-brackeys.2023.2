@@ -23,11 +23,22 @@ public class PlayerController : MonoBehaviour
 
     private bool ground = false;
 
+    GameManager gm;
+
+    private void Start()
+    {
+        gm = FindObjectOfType<GameManager>();
+    }
+
 
     void Update()
     {
+        if (gm==null)
+        {
+            gm = FindObjectOfType<GameManager>();
+        }
         //falling movement
-        if (!ground)
+        if (!ground && !gm.isGameOver())
         {
             if (fallSpeed <= maxFallSpeed)
             {
@@ -41,26 +52,31 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-
-        //player left/right movement
-        float horizontal = Input.GetAxis("Horizontal");
-        if (transform.position.x >= -10 && transform.position.x <= 10)
+        if (!gm.isGameOver())
         {
-            Vector3 moveDirection = new Vector3(horizontal, 0, 0);
-            moveDirection.Normalize();
-            transform.position += moveDirection * moveSpeed * Time.deltaTime;
-        } else
-        {
-            Vector3 currentPosition = transform.position;
-            if (transform.position.x < 0)
+            //player left/right movement
+            float horizontal = Input.GetAxis("Horizontal");
+            if (transform.position.x >= -10 && transform.position.x <= 10)
             {
-                currentPosition.x += 0.3f; //bump backwards
-            } else
-            {
-                currentPosition.x -= 0.3f;
+                Vector3 moveDirection = new Vector3(horizontal, 0, 0);
+                moveDirection.Normalize();
+                transform.position += moveDirection * moveSpeed * Time.deltaTime;
             }
-            transform.position = currentPosition;
+            else
+            {
+                Vector3 currentPosition = transform.position;
+                if (transform.position.x < 0)
+                {
+                    currentPosition.x += 0.3f; //bump backwards
+                }
+                else
+                {
+                    currentPosition.x -= 0.3f;
+                }
+                transform.position = currentPosition;
+            }
         }
+
     }
 
     private void OnTriggerEnter(Collider other)
@@ -74,6 +90,8 @@ public class PlayerController : MonoBehaviour
             Destroy(other.gameObject);
 
             //TODO: I'll want to bump the player in the opposite direction instead of destroy.
+
+
         }
 
         if (other.CompareTag("PowerUp"))
