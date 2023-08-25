@@ -3,11 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
-using TMPro;
-using Unity.VisualScripting;
-using TreeEditor;
-using Newtonsoft.Json.Bson;
+
 
 public class PowerupManager : MonoBehaviour
 {
