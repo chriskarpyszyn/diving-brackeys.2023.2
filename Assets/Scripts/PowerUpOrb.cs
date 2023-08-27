@@ -52,4 +52,9 @@ public class PowerUpOrb : MonoBehaviour, IPowerup
     {
         return coolDown;
     }
+
+    public void PlaySound(GameObject player)
+    {
+        player.GetComponent<AudioSource>();
+    }
 }

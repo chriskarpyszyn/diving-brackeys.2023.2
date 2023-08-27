@@ -23,6 +23,8 @@ public class PowerupManager : MonoBehaviour
 
     GameManager gm;
 
+    static PlayerAudio playerAudio;
+
 
     private void Start()
     {
@@ -34,6 +36,8 @@ public class PowerupManager : MonoBehaviour
         powerUpList = new List<GameObject>(2);
 
         gm = FindObjectOfType<GameManager>();
+
+        playerAudio = player.GetComponent<PlayerAudio>();
 
     }
     /***
@@ -59,11 +63,13 @@ public class PowerupManager : MonoBehaviour
             if (Input.GetKeyDown("1") && pup1Active && !GetIPowerup(powerUpList[0]).GetCooldown())
             {
                 StartCoroutine(StartCooldown(1));
+                playerAudio.playOrbSound(); //TODO- cant do this if it's randomized
 
             }
             if (Input.GetKeyDown("2") && pup2Active && !GetIPowerup(powerUpList[1]).GetCooldown())
             {
                 StartCoroutine(StartCooldown(2));
+                playerAudio.playSpeedSound();
             }
 
 
@@ -87,23 +93,40 @@ public class PowerupManager : MonoBehaviour
         GameObject powerup = powerUpList[numKey-1];
         IPowerup pinterface = GetIPowerup(powerup);
         pinterface.SetCooldown(true);
-        
-        Transform t = GetTransform(GetPupUI(numKey), "CooldownSquare");
-        t.gameObject.SetActive(true);
-        int timeLeft = pinterface.GetMaxCooldown();
-        while (timeLeft > 0)
+
+        Transform activeSquareTransform = GetTransform(GetPupUI(numKey), "ActiveSquare");
+        activeSquareTransform.gameObject.SetActive(true);
+        int timeLeftActiveCooldown = pinterface.GetMaxCooldown();
+
+        float denom = 100f;
+        while (timeLeftActiveCooldown > 0)
         {
-            float fractionalSeconds = timeLeft / 1000;
-            yield return new WaitForSeconds(fractionalSeconds);
-            timeLeft--;
-            pinterface.SetCurrentCooldown(timeLeft);
-            SetCooldownText(powerup, GetPupUI(numKey), timeLeft);
+            float endTime = Time.time + 1f/denom;  // 1f for 1 second interval
+            yield return new WaitUntil(() => Time.time >= endTime);
+            timeLeftActiveCooldown--;
+            pinterface.SetCurrentCooldown(timeLeftActiveCooldown);
+            SetCooldownText(powerup, GetPupUI(numKey), timeLeftActiveCooldown);
+        }
+        activeSquareTransform.gameObject.SetActive(false);
+        ResetBehavior(numKey);
+
+        ///////
+        Transform coolDownSquareTransform = GetTransform(GetPupUI(numKey), "CooldownSquare");
+        coolDownSquareTransform.gameObject.SetActive(true);
+        int cooldownTimeleft = pinterface.GetMaxCooldown();
+        while (cooldownTimeleft > 0)
+        {
+            float endTime = Time.time + 1f/denom;  // 1f for 1 second interval
+            yield return new WaitUntil(() => Time.time >= endTime);
+            cooldownTimeleft--;
+            pinterface.SetCurrentCooldown(cooldownTimeleft);
+            SetCooldownText(powerup, GetPupUI(numKey), cooldownTimeleft);
         }
         pinterface.SetCooldown(false);
-        t.gameObject.SetActive(false);
+        coolDownSquareTransform.gameObject.SetActive(false);
         pinterface.SetCurrentCooldown(pinterface.GetMaxCooldown()); //TODO: i can create a reset method
         SetCooldownText(powerup, GetPupUI(numKey), pinterface.GetMaxCooldown());
-        ResetBehavior(numKey);
+        
     }
 
     private void ExecuteBehavior(int puSlot)

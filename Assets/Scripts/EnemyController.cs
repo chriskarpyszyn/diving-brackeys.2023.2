@@ -14,7 +14,7 @@ public class EnemyController : MonoBehaviour
 
     public float changedirectionTime = 2f;
     private float timer;
-    private int direction = 1;
+    private int xDirection = 1;
     private int yDirection = 1;
 
 
@@ -29,7 +29,7 @@ public class EnemyController : MonoBehaviour
     private void Start()
     {
         gm = FindObjectOfType<GameManager>();
-        direction = Random.value < 0.5f ? -1 : 1;
+        xDirection = Random.value < 0.5f ? -1 : 1;
         yDirection = Random.value < 0.5f ? -1 : 1;
         specificY = transform.position.y;
     }
@@ -43,13 +43,13 @@ public class EnemyController : MonoBehaviour
 
         if (!gm.isGameOver())
         {
-            transform.Translate(Vector3.right * direction * moveSpeed * Time.deltaTime);
+            transform.Translate(transform.right * xDirection * moveSpeed * Time.deltaTime);
             transform.Translate(Vector3.up * yDirection * yMoveSpeed * Time.deltaTime);
 
             //change direction if it reaches a position >10
-            if (transform.position.x < -9f || transform.position.x > 9f)
+            if (transform.position.x < -8.5f || transform.position.x > 8.5f)
             {
-                direction *= -1;
+                xDirection *= -1;
             }
             float yOffset = 0.45f;
             if (transform.position.y < specificY-yOffset || transform.position.y > specificY+yOffset)
@@ -58,14 +58,35 @@ public class EnemyController : MonoBehaviour
             }
 
 
-            //cute fishies looking in a direction
-            if ((direction > 0 && yDirection > 0) ||(direction < 0 && yDirection < 0))
+            ////cute fishies looking in a direction
+            //if ((xDirection > 0 && yDirection > 0) || (xDirection < 0 && yDirection < 0))
+            //{
+            //    transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y, 5f);
+            //}
+            //else
+            //{
+            //    transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y, -5f);
+            //}
+
+
+
+            if (xDirection > 0 && yDirection > 0)
             {
-                transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y, 5f);
-            } else
-            {
-                transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y, -5f);
+                transform.eulerAngles = new Vector3(transform.eulerAngles.x, 180f, 5f);
             }
+            else if (xDirection > 0 && yDirection < 0)
+            {
+                transform.eulerAngles = new Vector3(transform.eulerAngles.x, 180f, -5f);
+            }
+            else if (xDirection < 0 && yDirection > 0)
+            {
+                transform.eulerAngles = new Vector3(transform.eulerAngles.x, 0, -5f);
+            }
+            else if (xDirection < 0 && yDirection < 0)
+            {
+                transform.eulerAngles = new Vector3(transform.eulerAngles.x, 0, 5f);
+            }
+
 
             //change depending on timer        
             timer += Time.deltaTime;
@@ -73,7 +94,7 @@ public class EnemyController : MonoBehaviour
             {
                 changedirectionTime = Random.Range(0.5f, 2f);
                 timer = 0f;
-                direction = Random.value < 0.5f ? -1 : 1;
+                xDirection = Random.value < 0.5f ? -1 : 1;
             }
 
             //random y timer

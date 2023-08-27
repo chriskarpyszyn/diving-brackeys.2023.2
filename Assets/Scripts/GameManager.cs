@@ -11,7 +11,7 @@ public class GameManager : MonoBehaviour
     private static GameObject musicManager;
 
     //scores and other ui data
-    private int scoreDepth = 0;
+    private float scoreDepth = 0;
     private int playerHealth = 3;
 
     //vars for enemy generation
@@ -21,9 +21,9 @@ public class GameManager : MonoBehaviour
 
     //vars for powerups
     public GameObject powerUpPrefab;
-    public int numberOfPowerups = 0;
-    public int numberToNextPowerup = 2;
-    private int powerUpIncrement = 1;
+    private int numberOfPowerups = 0;
+    private int numberToNextPowerup = 6;
+    private int powerUpIncrement = 3;
 
     private bool gameHasEnded = false;
 
@@ -50,17 +50,16 @@ public class GameManager : MonoBehaviour
     {
         if (SceneManager.GetActiveScene().buildIndex == 1 && Input.anyKeyDown)
         {
-            Debug.Log("why");
             RestartGame();
         }
     }
 
     public void SetDepth(int depth)
     {
-        scoreDepth = depth;
+        scoreDepth = depth/10;
     }
 
-    public int GetDepth()
+    public float GetDepth()
     {
         return scoreDepth;
     }
@@ -117,10 +116,10 @@ public class GameManager : MonoBehaviour
 
     private void createEnemies(float yPos, float zoneOffset)
     {
-        int depth = scoreDepth;
+        float depth = scoreDepth;
         //int randomNumber = Random.Range(1, 5); //TODO: I'd like things to be a bit more random...
         int randomNumber = 0;
-        int numberOfEnemiesToGenerate = (depth / enemyDivider) + randomNumber;
+        int numberOfEnemiesToGenerate = ((int)depth / enemyDivider) + randomNumber;
         float doubleZoneOffset = zoneOffset * 2; //no magic numbers... kinda
         float randomXRange = 9f;
 
@@ -130,20 +129,22 @@ public class GameManager : MonoBehaviour
             //int randomYIntRange = Random.Range(-20, 21);
             //float randomY = randomYIntRange * 0.5f;
             float randomY = Random.Range(yPos - doubleZoneOffset + 0.5f, yPos - -zoneOffset - doubleZoneOffset - 0.5f);
-            Instantiate(enemyPrefab, new Vector3(randomX, randomY, enemyPrefab.transform.position.z), Quaternion.identity);
+            GameObject enemy = Instantiate(enemyPrefab, new Vector3(randomX, randomY, enemyPrefab.transform.position.z), Quaternion.identity);
+            Destroy(enemy, 30f);
         }
     }
 
     private void createPowerups(float yPos, float zoneOffset)
     {
-        int randomNumber = Random.Range(0, 3);
+        int randomNumber = Random.Range(0, 1);
         float doubleZoneOffset = zoneOffset * 2;
 
         float randomXRange = 9f;
         for (int i = 0; i <= randomNumber; i++) {
             float randomX = Random.Range(-randomXRange, randomXRange);
             float randomY = Random.Range(yPos - doubleZoneOffset + 0.5f, yPos - -zoneOffset - doubleZoneOffset - 0.5f); //TODO: is this a typo ypos - -zoneOffset (+?)
-            Instantiate(powerUpPrefab, new Vector3(randomX, randomY, powerUpPrefab.transform.position.z), Quaternion.identity);
+            GameObject powerup = Instantiate(powerUpPrefab, new Vector3(randomX, randomY, powerUpPrefab.transform.position.z), Quaternion.identity);
+            Destroy(powerup, 30f);
         }
     }
 

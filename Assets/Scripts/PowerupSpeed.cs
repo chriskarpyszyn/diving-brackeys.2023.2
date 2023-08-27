@@ -7,8 +7,8 @@ public class PowerupSpeed : MonoBehaviour, IPowerup
 {
 
     private string powerupName = "Speed";
-    private int maxCooldown = 50;
-    private int currentCooldown = 50;
+    private int maxCooldown = 35;
+    private int currentCooldown = 35;
     private bool coolDown = false;
 
 
@@ -18,7 +18,8 @@ public class PowerupSpeed : MonoBehaviour, IPowerup
         pow.GetComponent<FollowPlayer>().SetPlayer(player);
         float destroyTime = (float)maxCooldown / 100;
 
-        player.GetComponent<PlayerController>().SetFallSpeed(30,30);
+        player.GetComponent<PlayerController>().SetFallSpeed(20,50);
+        
 
         Destroy(pow, destroyTime);
     }
@@ -55,5 +56,10 @@ public class PowerupSpeed : MonoBehaviour, IPowerup
     public bool GetCooldown()
     {
         return coolDown;
+    }
+
+    public void PlaySound(GameObject player)
+    {
+
     }
 }

@@ -11,6 +11,7 @@ public class PowerupTrigger : MonoBehaviour
         if (other.CompareTag("Enemy"))
         {
             Destroy(other.gameObject);
+            FindObjectOfType<PlayerAudio>().playerKillsEnemySound();
         }
     }
 }

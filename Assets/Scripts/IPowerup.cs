@@ -11,4 +11,5 @@ public interface IPowerup
     void SetCurrentCooldown(int c);
     void SetCooldown(bool b);
     bool GetCooldown();
+    void PlaySound(GameObject player);
 }

@@ -9,25 +9,29 @@ public class PlayerController : MonoBehaviour
     //private Rigidbody rb;
 
     private float _acceleration = 0.5f;
-    private float _maxFallSpeed = 5f;
+    private float _maxFallSpeed = 8f;
 
     //new falling code
-    public float fallSpeed = 2f;
-    public float acceleration = 0.5f;
-    public float maxFallSpeed = 5f;
+    public float fallSpeed = 5f;
+    private float lastFallSpeed = 0f;
+    public float acceleration = 0.3f;
+    public float maxFallSpeed = 20f;
 
     //movement 
-    public float moveSpeed = 8f;
+    public float moveSpeed = 9f;
     public float maxLeft = 10;
     public float maxRight = 10;
 
     private bool ground = false;
+
+    static PlayerAudio playerAudio;
 
     GameManager gm;
 
     private void Start()
     {
         gm = FindObjectOfType<GameManager>();
+        playerAudio = GetComponent<PlayerAudio>();
     }
 
 
@@ -86,16 +90,16 @@ public class PlayerController : MonoBehaviour
         Collider triggerCollider = GetComponent<Collider>();
         if (other.CompareTag("Enemy"))
         {
+            playerAudio.playEnemySound();
             gm.DecreaseHealth();
             Destroy(other.gameObject);
 
             //TODO: I'll want to bump the player in the opposite direction instead of destroy.
-
-
         }
 
         if (other.CompareTag("PowerUp"))
         {
+            playerAudio.playPowerupPickupSound();
             gm.IncrementPowerups();
             Destroy(other.gameObject);
         }
@@ -124,11 +128,13 @@ public class PlayerController : MonoBehaviour
     {
         this.maxFallSpeed = maxFallSpeed;
         this.acceleration = acceleration;
+        this.lastFallSpeed = fallSpeed;
     }
 
     public void ResetFallSpeed()
     {
         maxFallSpeed = _maxFallSpeed;
         acceleration = _acceleration;
+        fallSpeed = lastFallSpeed;
     }
 }
