@@ -27,6 +27,8 @@ public class GameManager : MonoBehaviour
 
     private bool gameHasEnded = false;
 
+    private bool canRestart = false;
+
 
     void Start()
     {
@@ -48,10 +50,31 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-        if (SceneManager.GetActiveScene().buildIndex == 1 && Input.anyKeyDown)
+        if (SceneManager.GetActiveScene().buildIndex == 1 && !canRestart)
+        {
+            StartCoroutine(WaitForRestart());
+        }
+        if (canRestart && IsAnyKey())
         {
             RestartGame();
         }
+    }
+    private bool IsAnyKey()
+    {
+        if (Input.anyKey)
+        {
+            if (!Input.GetMouseButton(0) && !Input.GetMouseButton(1) && !Input.GetMouseButton(2)) //excluding left, right, and middle mouse buttons
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    IEnumerator WaitForRestart()
+    {
+        yield return new WaitForSeconds(2); // wait for 3 seconds, for example
+        canRestart = true;
     }
 
     public void SetDepth(int depth)

@@ -8,17 +8,17 @@ public class PlayerController : MonoBehaviour
     //public float maxFallSpeed = -1f;
     //private Rigidbody rb;
 
-    private float _acceleration = 0.5f;
-    private float _maxFallSpeed = 8f;
+    private float _acceleration = 0.4f;
+    private float _maxFallSpeed = 10f;
 
     //new falling code
-    public float fallSpeed = 5f;
+    public float fallSpeed = 0f;
     private float lastFallSpeed = 0f;
-    public float acceleration = 0.3f;
-    public float maxFallSpeed = 20f;
+    private float acceleration = 0.2f;
+    private float maxFallSpeed = 8.5f;
 
     //movement 
-    public float moveSpeed = 9f;
+    public float moveSpeed = 5f;
     public float maxLeft = 10;
     public float maxRight = 10;
 

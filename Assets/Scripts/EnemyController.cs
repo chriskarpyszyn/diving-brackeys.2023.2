@@ -47,7 +47,8 @@ public class EnemyController : MonoBehaviour
             transform.Translate(Vector3.up * yDirection * yMoveSpeed * Time.deltaTime);
 
             //change direction if it reaches a position >10
-            if (transform.position.x < -8.5f || transform.position.x > 8.5f)
+            float fishy_border = 9.3f;
+            if (transform.position.x < -fishy_border || transform.position.x > fishy_border)
             {
                 xDirection *= -1;
             }
